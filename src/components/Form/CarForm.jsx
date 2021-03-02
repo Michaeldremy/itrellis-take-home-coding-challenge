@@ -133,32 +133,32 @@ const CarForm = () => {
   // This state was going to be used to display results after the form was submitted
   const [formSubmitted, setFormSubbmited] = useState(false);
 
-  let filteredArray = [];
+  let filteredArray = []
 
-  // *Not working* Idea was to map through our inventory and then if the properties on the different cars
+  // *Not working* Idea was to map through our inventory and then if the properties on the different cars 
   // matched input from the form then return the result of the cars that matched.
   let filteredCriteria = inventory.map((car) => {
-    if (car.color === carColor && car.isFourWheelDrive === fourWheelDrive) {
-      filteredArray.push(car);
+    if (car.color === carColor && car.isFourWheelDrive === fourWheelDrive && car.hasHeatedSeats === heatedSeats && car.hasSunroof === sunroof && car.hasLowMiles === lowMiles) {
+      filteredArray.push(car)
     }
   });
-
+  
   // Mapping through the filtered/matched results array and displaying the matched cars
   let results = filteredArray.map((item) => {
     return (
       <>
-        <Header content={`Make: ${item.make}`} as="h3" />
-        <Header content={`Year: ${item.year}`} as="h3" />
-        <Header content={`Color: ${item.color}`} as="h3" />
-        <Header content={`Price: $${item.price}`} as="h3" />
+        <Header content={`Make: ${item.make}`} as="h3"/>
+        <Header content={`Year: ${item.year}`} as="h3"/>
+        <Header content={`Color: ${item.color}`} as="h3"/>
+        <Header content={`Price: $${item.price}`} as="h3"/>
         {/* {item.isFourWheelDrive === true ? <Header content={'Four Wheel Drive: Yes'} as="h3"/> : <Header content={'Four Wheel Drive: No'} as="h3"/>}
-        {item.hasLowMiles === true ? <Header content={'Low Miles: Yes'} as="h3"/> : <Header content={'Low Miles: No'} as="h3"/>}
-        {item.hasSunroof === true ? <Header content={'Sunroof: Yes'} as="h3"/> : <Header content={'Sunroof: No'} as="h3"/>}
-        {item.hasHeatedSeats === true ? <Header content={'Heated Seats: Yes'} as="h3"/> : <Header content={'Heated Seats: No'} as="h3"/>} */}
-        {/* {item.hasPowerWindows === true ? <Header content={'Power Windows: Yes'} as="h3"/> : <Header content={'Power Windows: No'} as="h3"/>} */}
+      {item.hasLowMiles === true ? <Header content={'Low Miles: Yes'} as="h3"/> : <Header content={'Low Miles: No'} as="h3"/>}
+      {item.hasSunroof === true ? <Header content={'Sunroof: Yes'} as="h3"/> : <Header content={'Sunroof: No'} as="h3"/>}
+      {item.hasHeatedSeats === true ? <Header content={'Heated Seats: Yes'} as="h3"/> : <Header content={'Heated Seats: No'} as="h3"/>} */}
+      {/* {item.hasPowerWindows === true ? <Header content={'Power Windows: Yes'} as="h3"/> : <Header content={'Power Windows: No'} as="h3"/>} */}
       </>
-    );
-  });
+    )
+  })
 
   // Function to handle all of the user submissions and will return the cars that fit the criteria from inventory
   const onSubmitHandler = (e) => {

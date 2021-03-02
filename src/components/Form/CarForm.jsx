@@ -123,75 +123,48 @@ const CarForm = () => {
   ];
 
   const [carColor, setCarColor] = useState("");
-  const [price, setPrice] = useState(Number);
-  const [sunroof, setSunroof] = useState(true);
-  const [fourWheelDrive, setFourWheelDrive] = useState(true);
-  const [lowMiles, setLowMiles] = useState(true);
-  const [powerWindows, setPowerWindows] = useState(true);
-  const [navigation, setNavigation] = useState(true);
-  const [heatedSeats, setHeatedSeats] = useState(true);
-  const [formSubmitted, setFormSubbmited] = useState(true);
+  const [sunroof, setSunroof] = useState(false);
+  const [fourWheelDrive, setFourWheelDrive] = useState(false);
+  const [lowMiles, setLowMiles] = useState(false);
+  const [powerWindows, setPowerWindows] = useState(false);
+  const [navigation, setNavigation] = useState(false);
+  const [heatedSeats, setHeatedSeats] = useState(false);
 
-  // Functions to handle individual form submissions
-  const handleColorChoosen = (event) => {
-    setCarColor(event.target.value);
-  };
+  // This state was going to be used to display results after the form was submitted
+  const [formSubmitted, setFormSubbmited] = useState(false);
 
-  const handlePrice = (event) => {
-    setPrice(event.target.value);
-  };
+  let filteredArray = [];
 
-  const handleSunroof = () => {
-    setSunroof((value) => !value);
-  };
-
-  const handleFourWheelDrive = () => {
-    setFourWheelDrive((value) => !value);
-  };
-
-  const handleLowMiles = () => {
-    setLowMiles((value) => !value);
-  };
-
-  const handlePowerWindows = () => {
-    setPowerWindows((value) => !value);
-  };
-
-  const hanldeNavigation = () => {
-    setNavigation((value) => !value);
-  };
-
-  const handleHeatedSeats = () => {
-    setHeatedSeats((value) => !value);
-  };
-
+  // *Not working* Idea was to map through our inventory and then if the properties on the different cars
+  // matched input from the form then return the result of the cars that matched.
   let filteredCriteria = inventory.map((car) => {
-    if (car.color === carColor) {
-      for (const [key, value] of Object.entries(car)) {
-        if (key === "make") {
-          return (
-            <>
-              <Header
-                content="Model:"
-                as="label"
-                style={{ marginLeft: "10px", marginRight: "10px" }}
-              />
-              <Header content={value} as="label" />
-              <br />
-            </>
-          );
-        }
-      }
+    if (car.color === carColor && car.isFourWheelDrive === fourWheelDrive) {
+      filteredArray.push(car);
     }
   });
 
-  // Function to handle all of the user submissions and will return the cars that fit the criteria from inventory
-  const onSubmitHandler = (event) => {
-    event.preventDefault();
-    setFormSubbmited(false);
-  };
+  // Mapping through the filtered/matched results array and displaying the matched cars
+  let results = filteredArray.map((item) => {
+    return (
+      <>
+        <Header content={`Make: ${item.make}`} as="h3" />
+        <Header content={`Year: ${item.year}`} as="h3" />
+        <Header content={`Color: ${item.color}`} as="h3" />
+        <Header content={`Price: $${item.price}`} as="h3" />
+        {/* {item.isFourWheelDrive === true ? <Header content={'Four Wheel Drive: Yes'} as="h3"/> : <Header content={'Four Wheel Drive: No'} as="h3"/>}
+        {item.hasLowMiles === true ? <Header content={'Low Miles: Yes'} as="h3"/> : <Header content={'Low Miles: No'} as="h3"/>}
+        {item.hasSunroof === true ? <Header content={'Sunroof: Yes'} as="h3"/> : <Header content={'Sunroof: No'} as="h3"/>}
+        {item.hasHeatedSeats === true ? <Header content={'Heated Seats: Yes'} as="h3"/> : <Header content={'Heated Seats: No'} as="h3"/>} */}
+        {/* {item.hasPowerWindows === true ? <Header content={'Power Windows: Yes'} as="h3"/> : <Header content={'Power Windows: No'} as="h3"/>} */}
+      </>
+    );
+  });
 
-  // Red, white, gray, silver, black
+  // Function to handle all of the user submissions and will return the cars that fit the criteria from inventory
+  const onSubmitHandler = (e) => {
+    e.preventDefault();
+    setFormSubbmited(true);
+  };
 
   // Semantic UI Forms are not currently working.. I am using regular HTML forms/inputs for now, I apologize for it not looking good.
 
@@ -205,7 +178,7 @@ const CarForm = () => {
         <form onSubmit={onSubmitHandler}>
           {/* Dropdown */}
           <label>Car Color: </label>
-          <select onChange={handleColorChoosen}>
+          <select onChange={(e) => setCarColor(e.target.value)}>
             <option value="Red">Red</option>
             <option value="White">White</option>
             <option value="Silver">Silver</option>
@@ -214,17 +187,12 @@ const CarForm = () => {
           </select>
           <br />
           <br />
-          {/* Number */}
-          <label>Price: </label>
-          <input type="number" name="price" onChange={handlePrice}></input>
-          <br />
-          <br />
           {/* Checkbox */}
           <label>Sunroof: </label>
           <input
             type="checkbox"
             name="hasSunroof"
-            onChange={handleSunroof}
+            onChange={() => setSunroof(!sunroof)}
           ></input>
           <br />
           <br />
@@ -233,7 +201,7 @@ const CarForm = () => {
           <input
             type="checkbox"
             name="isFourWheelDrive"
-            onChange={handleFourWheelDrive}
+            onChange={() => setFourWheelDrive(!fourWheelDrive)}
           ></input>
           <br />
           <br />
@@ -242,7 +210,7 @@ const CarForm = () => {
           <input
             type="checkbox"
             name="hasLowMiles"
-            onChange={handleLowMiles}
+            onChange={() => setLowMiles(!lowMiles)}
           ></input>
           <br />
           <br />
@@ -251,7 +219,7 @@ const CarForm = () => {
           <input
             type="checkbox"
             name="hasPowerWindows"
-            onChange={handlePowerWindows}
+            onChange={() => setPowerWindows(!powerWindows)}
           ></input>
           <br />
           <br />
@@ -260,7 +228,7 @@ const CarForm = () => {
           <input
             type="checkbox"
             name="hasNavigation"
-            onChange={hanldeNavigation}
+            onChange={() => setNavigation(!navigation)}
           ></input>
           <br />
           <br />
@@ -269,7 +237,7 @@ const CarForm = () => {
           <input
             type="checkbox"
             name="hasHeatedSeats"
-            onChange={handleHeatedSeats}
+            onChange={() => setHeatedSeats(!heatedSeats)}
           ></input>
           <br />
           <br />
@@ -277,7 +245,7 @@ const CarForm = () => {
         </form>
       </div>
 
-      {filteredCriteria}
+      {results}
     </>
   );
 };
